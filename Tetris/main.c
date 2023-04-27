@@ -231,8 +231,16 @@ int main() {
 	Color cur;
 	for (i = 0; i < 7; i++) {
 		for (r = 0; r < 4; r++) {
-			for (s = 0; s < 7; s++) {
-
+			for (s = 0; s < shape[i].size; s++) {
+				for(t = 0; t < shape[i].size; t++) {
+					if (shape[i].rotate[r][s][t]) {
+						cur = shape[i].color;
+					}
+					else {
+						cur = WHITE;
+					}
+				//	printf("\033[%d")
+				}
 			}
 		}
 	}
