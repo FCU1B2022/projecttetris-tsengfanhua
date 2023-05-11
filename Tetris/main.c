@@ -1,4 +1,10 @@
 #include<stdio.h>
+#include<stdbool.h>
+#include<stdlib.h>
+#include<time.h>
+
+#define CANVAS_WIDTH 10
+#define CANVAS_HEIGHT 20
 
 typedef enum {
 	RED	= 41,
@@ -19,6 +25,7 @@ typedef enum {
 typedef struct {
 	Color color;
 	Shapeid shape;
+	bool current;
 }Block;
 
 typedef struct {
@@ -226,9 +233,46 @@ Shape shape[7] = {
 
 };
 
+typedef struct {
+	int x;
+	int y;
+	int score;
+	int rotate;
+	int fallTime;
+	Shapeid queue[4];
+}State;
+
+void resetBlock(Block* block) {
+	block->color = BLACK;
+	block->shape = EMPTY;
+	block->current = false;
+}
+
 int main() {
-	int i, r, s, t;
-	Color cur;
+	srand(time(NULL));
+	State state = {
+		.x = CANVAS_WIDTH / 2,
+		.y = 0,
+		.score = 0,
+		.rotate = 0,
+		.fallTime = 0
+	};
+
+	int i, j, r, s, t;
+
+	for (i = 0; i < 4; i++) {
+		state.queue[i] = rand() % 7;
+	}
+
+	Block canvas[CANVAS_HEIGHT][CANVAS_WIDTH];
+
+	for (i = 0; i < CANVAS_HEIGHT; i++) {
+		for (j = 0; j < CANVAS_WIDTH; j++) {
+			resetBlock(&canvas[i][j]);
+		}
+	}
+
+	/*Color cur;
 	for (i = 0; i < 7; i++) {
 		for (r = 0; r < 4; r++) {
 			for (s = 0; s < shape[i].size; s++) {
@@ -243,6 +287,8 @@ int main() {
 				}
 			}
 		}
-	}
+	}*/
 
+	system("cls");
+	printf("\e[?25l"); // hide cursor
 }
