@@ -36,7 +36,7 @@ typedef struct {
 	char rotate[4][4][4];
 }Shape;
 
-Shape shape[7] = {
+Shape shapes[7] = {
 	{
 		.shape = I,
 		.color = CYAN,
