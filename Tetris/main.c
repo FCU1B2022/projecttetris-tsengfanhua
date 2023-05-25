@@ -8,19 +8,19 @@
 #define CANVAS_HEIGHT 20
 
 typedef enum {
-	RED	= 41,
-	YELLOW ,
-	GREEN ,
-	BLUE ,
-	PURPLE ,
-	CYAN ,
-	WHITE ,
-	BLACK = 0 
+	RED = 41,
+	YELLOW,
+	GREEN,
+	BLUE,
+	PURPLE,
+	CYAN,
+	WHITE,
+	BLACK = 0
 }Color;
 
 typedef enum {
 	EMPTY = -1,
-	I,J,L,O,S,T,Z
+	I, J, L, O, S, T, Z
 }Shapeid;
 
 typedef struct {
@@ -77,7 +77,7 @@ Shape shapes[7] = {
 				{0,0,1},
 				{0,0,1},
 				{0,1,1},
-				
+
 			},
 			{
 				{0,0,0},
@@ -243,6 +243,13 @@ typedef struct {
 	Shapeid queue[4];
 }State;
 
+void setBlock(Block* block, Color color, Shapeid shape, bool current)
+{
+	block->color = color;
+	block->shape = shape;
+	block->current = current;
+}
+
 void resetBlock(Block* block) {
 	block->color = BLACK;
 	block->shape = EMPTY;
@@ -257,7 +264,7 @@ bool move(Block canvas[CANVAS_HEIGHT][CANVAS_WIDTH], int originalX, int original
 	// check if the new position is valid to place the block
 	for (i = 0; i < size; i++) {
 		for (j = 0; j < size; j++) {
-			if (shapeData.rotates[newRotate][i][j]) {
+			if (shapeData.rotate[newRotate][i][j]) {
 				if (newX + j < 0 || newX + j >= CANVAS_WIDTH || newY + i < 0 || newY + i >= CANVAS_HEIGHT) {
 					return false;
 				}
@@ -271,7 +278,7 @@ bool move(Block canvas[CANVAS_HEIGHT][CANVAS_WIDTH], int originalX, int original
 	// remove the old position
 	for (i = 0; i < size; i++) {
 		for (j = 0; j < size; j++) {
-			if (shapeData.rotates[originalRotate][i][j]) {
+			if (shapeData.rotate[originalRotate][i][j]) {
 				resetBlock(&canvas[originalY + i][originalX + j]);
 			}
 		}
@@ -280,8 +287,8 @@ bool move(Block canvas[CANVAS_HEIGHT][CANVAS_WIDTH], int originalX, int original
 	// move the block
 	for (i = 0; i < size; i++) {
 		for (j = 0; j < size; j++) {
-			if (shapeData.rotates[newRotate][i][j]) {
-				setBlock(&canvas[newY + i][newX + j], shapeData.color, shapeId, true);
+			if (shapeData.rotate[newRotate][i][j]) {
+				setBlock(&canvas[newY + i][newX + j], shapeData.color, shapeid, true);
 			}
 		}
 	}
@@ -291,7 +298,7 @@ bool move(Block canvas[CANVAS_HEIGHT][CANVAS_WIDTH], int originalX, int original
 
 void printCanvas(Block canvas[CANVAS_HEIGHT][CANVAS_WIDTH], State* state) {
 	printf("\033[0;0H\n");
-	int i,j;
+	int i, j;
 	for (i = 0; i < CANVAS_HEIGHT; i++) {
 		printf("|");
 		for (j = 0; j < CANVAS_WIDTH; j++) {
@@ -351,11 +358,11 @@ int main() {
 	}*/
 
 	system("cls");
-//	printf("\e[?25l"); // hide cursor
+	//	printf("\e[?25l"); // hide cursor
 
 	while (1) {
-		logic();
-		printCanvas(canvas);
+		logic(canvas, &state);
+		printCanvas(canvas, &state);
 		Sleep(100);
 	}
 	//
