@@ -391,7 +391,10 @@ void logic(Block canvas[CANVAS_HEIGHT][CANVAS_WIDTH], State* state) {
 		if (move(canvas, state->x, state->y, state->rotate, state->x, state->y, newRotate, state->queue[0])) {
 			state->rotate = newRotate;
 		}
+//增加讀取1234按鍵指定當下旋轉情況
+//瘋狂模式rotate不停
 	}
+	
 	else if (LEFT_FUNC()) {
 		if (move(canvas, state->x, state->y, state->rotate, state->x - 1, state->y, state->rotate, state->queue[0])) {
 			state->x -= 1;
