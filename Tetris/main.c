@@ -313,7 +313,7 @@ bool move(Block canvas[CANVAS_HEIGHT][CANVAS_WIDTH], int originalX, int original
 
 void printCanvas(Block canvas[CANVAS_HEIGHT][CANVAS_WIDTH], State* state) {
 	printf("\033[0;0H\n");
-	int i, j;
+	int i, j, k;
 	for (i = 0; i < CANVAS_HEIGHT; i++) {
 		printf("|");
 		for (j = 0; j < CANVAS_WIDTH; j++) {
@@ -329,7 +329,7 @@ void printCanvas(Block canvas[CANVAS_HEIGHT][CANVAS_WIDTH], State* state) {
 		for (j = 0; j < 4; j++) {
 			printf("\033[%d;%dH", i * 4 + j, CANVAS_WIDTH * 2 + 15);
 			for (k = 0; k < 4; k++) {
-				if (j < shapeData.size && k < shapeData.size && shapeData.rotates[0][j][k]) {
+				if (j < shapeData.size && k < shapeData.size && shapeData.rotate[0][j][k]) {
 					printf("\x1b[%dm  ", shapeData.color);
 				}
 				else {
@@ -342,7 +342,7 @@ void printCanvas(Block canvas[CANVAS_HEIGHT][CANVAS_WIDTH], State* state) {
 }
 
 int clearLine(Block canvas[CANVAS_HEIGHT][CANVAS_WIDTH]) {
-	int i, j;
+	int i, j, k;
 	for (i = 0; i < CANVAS_HEIGHT; i++) {
 		for (j = 0; j < CANVAS_WIDTH; j++) {
 			if (canvas[i][j].current) {
@@ -384,7 +384,7 @@ int clearLine(Block canvas[CANVAS_HEIGHT][CANVAS_WIDTH]) {
 }
 
 void logic(Block canvas[CANVAS_HEIGHT][CANVAS_WIDTH], State* state) {
-	if (ROTATE_FUN()) {
+	if (ROTATE_FUNC()) {
 		int newRotate = (state->rotate + 1) % 4;
 		if (move(canvas, state->x, state->y, state->rotate, state->x, state->y, newRotate, state->queue[0])) {
 			state->rotate = newRotate;
@@ -408,7 +408,7 @@ void logic(Block canvas[CANVAS_HEIGHT][CANVAS_WIDTH], State* state) {
 	while (state->fallTime >= FALL_DELAY) {
 		state->fallTime -= FALL_DELAY;
 
-		if (canvas, state->x, state->y, state->rotate, state->x, state->y + 1, state->rotate, state->queue[0]) {
+		if (move(canvas, state->x, state->y, state->rotate, state->x, state->y + 1, state->rotate, state->queue[0])) {
 			state->y++;
 		}
 		else {
