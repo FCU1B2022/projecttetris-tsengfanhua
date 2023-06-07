@@ -386,7 +386,15 @@ int clearLine(Block canvas[CANVAS_HEIGHT][CANVAS_WIDTH]) {
 }
 
 void logic(Block canvas[CANVAS_HEIGHT][CANVAS_WIDTH], State* state) {
-	if (ROTATE_FUNC()) {
+	if (1) {//
+		int newRotate = (state->rotate + 1) % 4;
+		if (move(canvas, state->x, state->y, state->rotate, state->x, state->y, newRotate, state->queue[0])) {
+			state->rotate = newRotate;
+		}
+		//增加讀取1234按鍵指定當下旋轉情況
+		//瘋狂模式rotate不停
+	}
+	if (ROTATE_FUNC()) {//
 		int newRotate = (state->rotate + 1) % 4;
 		if (move(canvas, state->x, state->y, state->rotate, state->x, state->y, newRotate, state->queue[0])) {
 			state->rotate = newRotate;
